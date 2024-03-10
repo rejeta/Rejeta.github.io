@@ -16,21 +16,22 @@
   <meta name="author" content="Rejeta">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+    <meta name="description" content="刚开始接触go语言的网络通信相关的部分，想制作一个代理工具。编码过程中踩了不少的坑，以此记录。 1. 短链接中的“长连接”众所周知，在网络连接中，TCP协议属于长连接，即tcp连接构建完毕后，能够实现非常稳定的数据通信。只要网络连接不断开，TCP协议可以保证发送出去的数据一定能够送达。与之相反的是UDP通信协议，UDP通信协议是一种无连接的通信协议，也就是俗称的短链接。 在使用GO语言的net库">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2024/02/16/hello-world/index.html">
+<meta property="og:title" content="go中的网络通信踩坑记录">
+<meta property="og:url" content="http://example.com/2024/03/10/go%E4%B8%AD%E7%9A%84udp%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/index.html">
 <meta property="og:site_name" content="O_o">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="刚开始接触go语言的网络通信相关的部分，想制作一个代理工具。编码过程中踩了不少的坑，以此记录。 1. 短链接中的“长连接”众所周知，在网络连接中，TCP协议属于长连接，即tcp连接构建完毕后，能够实现非常稳定的数据通信。只要网络连接不断开，TCP协议可以保证发送出去的数据一定能够送达。与之相反的是UDP通信协议，UDP通信协议是一种无连接的通信协议，也就是俗称的短链接。 在使用GO语言的net库">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-02-16T03:16:59.878Z">
-<meta property="article:modified_time" content="2024-02-16T03:16:59.878Z">
+<meta property="article:published_time" content="2024-03-10T09:52:48.000Z">
+<meta property="article:modified_time" content="2024-03-10T10:53:03.803Z">
 <meta property="article:author" content="Rejeta">
+<meta property="article:tag" content="go_code">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Hello World - O_o</title>
+  <title>go中的网络通信踩坑记录 - O_o</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -196,7 +197,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Hello World"></span>
+            <span id="subtitle" data-typed-text="go中的网络通信踩坑记录"></span>
           
         </div>
 
@@ -207,8 +208,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-02-16 11:16" pubdate>
-          2024年2月16日 上午
+        <time datetime="2024-03-10 17:52" pubdate>
+          2024年3月10日 下午
         </time>
       </span>
     
@@ -219,7 +220,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          18 字
+          1.1k 字
         
       </span>
     
@@ -230,7 +231,7 @@
         
         
         
-          1 分钟
+          9 分钟
         
       </span>
     
@@ -267,24 +268,41 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Hello World</h1>
+            <h1 id="seo-header">go中的网络通信踩坑记录</h1>
             
             
               <div class="markdown-body">
                 
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+                <p> 刚开始接触go语言的网络通信相关的部分，想制作一个代理工具。编码过程中踩了不少的坑，以此记录。</p>
+<h2 id="1-短链接中的“长连接”"><a href="#1-短链接中的“长连接”" class="headerlink" title="1. 短链接中的“长连接”"></a>1. 短链接中的“长连接”</h2><p>众所周知，在网络连接中，<code>TCP</code>协议属于长连接，即tcp连接构建完毕后，能够实现非常稳定的数据通信。只要网络连接不断开，<code>TCP</code>协议可以保证发送出去的数据一定能够送达。与之相反的是<code>UDP</code>通信协议，<code>UDP</code>通信协议是一种无连接的通信协议，也就是俗称的短链接。</p>
+<p>在使用GO语言的<code>net</code>库编写网络通信相关的代码时，常会发现<code>UDP</code>和<code>TCP</code>使用的代码极其相似，但是正如上文所说，<code>UDP</code>协议并不需要构建连接，这一度给我造成了疑惑。</p>
+<p>示例代码如下：</p>
+<p><code>TCP</code>协议的简单客户端实现</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go">conn, err := net.Dial(<span class="hljs-string">&quot;tcp&quot;</span>, <span class="hljs-string">&quot;127.0.0.1:8888&quot;</span>)<br><span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>	log.Println(<span class="hljs-string">&quot;dial error:&quot;</span>, err)<br>	<span class="hljs-keyword">return</span><br>&#125;<br><span class="hljs-keyword">defer</span> conn.Close()<br>log.Println(<span class="hljs-string">&quot;dial ok&quot;</span>)<br></code></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p><code>UDP</code>协议的简单客户端实现</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go">addr := &amp;net.UDPAddr&#123;IP: net.ParseIP(<span class="hljs-string">&quot;127.0.0.1&quot;</span>), Port: <span class="hljs-number">8080</span>&#125;<br>	conn, err := net.DialUDP(<span class="hljs-string">&quot;udp&quot;</span>, <span class="hljs-literal">nil</span>, addr)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(err)<br>	&#125;<br>	<span class="hljs-keyword">defer</span> conn.Close()<br><br>	fmt.Fprintf(conn, <span class="hljs-string">&quot;Hello, server!&quot;</span>)<br></code></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p><code>TCP</code>协议的简单服务端实现</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs go">listener, err := net.Listen(<span class="hljs-string">&quot;tcp&quot;</span>, <span class="hljs-string">&quot;:8888&quot;</span>)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        fmt.Println(<span class="hljs-string">&quot;listen error:&quot;</span>, err)<br>        <span class="hljs-keyword">return</span><br>    &#125;<br><br>    <span class="hljs-keyword">for</span> &#123;<br>        c, err := l.Accept()<br>        <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>            fmt.Println(<span class="hljs-string">&quot;accept error:&quot;</span>, err)<br>            <span class="hljs-keyword">break</span><br>        &#125;<br>        <span class="hljs-comment">// start a new goroutine to handle</span><br>        <span class="hljs-comment">// the new connection.</span><br>        <span class="hljs-keyword">go</span> handleConn(c)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p><code>UDP</code>协议的简单服务端实现</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs go">addr := &amp;net.UDPAddr&#123;IP: net.ParseIP(<span class="hljs-string">&quot;127.0.0.1&quot;</span>), Port: <span class="hljs-number">8080</span>&#125;<br>	conn, err := net.ListenUDP(<span class="hljs-string">&quot;udp&quot;</span>, addr)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(err)<br>	&#125;<br>	<span class="hljs-keyword">defer</span> conn.Close()<br><br>	buf := <span class="hljs-built_in">make</span>([]<span class="hljs-type">byte</span>, <span class="hljs-number">1024</span>)<br>	n, addr, err := conn.ReadFromUDP(buf)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(err)<br>	&#125;<br><br>	fmt.Printf(<span class="hljs-string">&quot;Received message from %s: %s\n&quot;</span>, addr.String(), <span class="hljs-type">string</span>(buf[:n]))<br></code></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<blockquote>
+<p>坑点记录</p>
+<p>同样使用了<code>Dial</code>与<code>Listen</code>的方法组合，结合上文中提到的长链接与短链接的概念，导致在实现过程中，会误认为udp协议可以在不改变listen的情况下，释放dial的连接并重新发起连接。实际上，GO为了方便实现，将udp和tcp的设计成非常相似的连接。也就是说，在udp连接相关使用过程中，需要按照tcp协议的使用方式，让dial和listen成对出现，让udp这个短链接以“长连接”的方式使用</p>
+</blockquote>
+<h2 id="2-底层协议的通病——长度"><a href="#2-底层协议的通病——长度" class="headerlink" title="2. 底层协议的通病——长度"></a>2. 底层协议的通病——长度</h2><p>在编写文章的时候，突然想起了一个使用udp和tcp协议都常见的错误类型，那就是忽略了发送数据的长度。在使用上层协议（比如<code>http</code>协议）编写代码的过程中，服务端接收来自客户端发送的数据，往往可以在获取数据内容的同时，获知内容的大小。而在tcp协议和udp协议中，由于比应用层低一层，并没有对长度做任何的规定和限制，也就出现了常见的网络笑话“TCP粘包传说”。</p>
+<blockquote>
+<p>坑点记录</p>
+<p>因此，在实际编码的过程中，作者需要特别关注这一点。构建的通信模型中一定需要对数据大小进行规定和切分，避免因为数据长度的问题降低程序的可靠性</p>
+</blockquote>
+<h2 id="3-小心系统的守门员"><a href="#3-小心系统的守门员" class="headerlink" title="3.小心系统的守门员"></a>3.小心系统的守门员</h2><p>测试代码的过程中，曾遇到过一个令人费解的问题。服务端总是收不到应该接收到的数据报文。由于测试虚拟机是windows虚拟机，为了避免因为防火墙造成的通信干扰，在测试的过程中特地关闭了防火墙。当测试<code>icmp</code>代理通信时，由于防火墙的关闭，windows操作系统自动对<code>icmp</code>协议数据报文进行回复。在<code>wireshark</code>抓包中，可以收到来自服务端系统的<code>reply</code>数据，且与<code>request</code>成对出现。</p>
+<blockquote>
+<p>坑点记录</p>
+<p>这一点曾让我一度怀疑代码执行流程的错误。实际上，只需要开放防火墙对于<code>icmp</code>协议的拦截，即可正确实现通信。因此，在windows操作系统中测试需要注意，对于内置防火墙来说，能够编辑策略就不要将防火墙关闭，降低环境对代码运行效果的影响</p>
+</blockquote>
 
                 
               </div>
@@ -294,6 +312,13 @@
               <div class="post-metas my-3">
   
   
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/go-code/" class="print-no-link">#go_code</a>
+      
+    </div>
+  
 </div>
 
 
@@ -302,8 +327,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Hello World</div>
-      <div>http://example.com/2024/02/16/hello-world/</div>
+      <div>go中的网络通信踩坑记录</div>
+      <div>http://example.com/2024/03/10/go中的udp网络通信踩坑记录/</div>
     </div>
     <div class="license-meta">
       
@@ -315,7 +340,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年2月16日</div>
+          <div>2024年3月10日</div>
         </div>
       
       
@@ -347,15 +372,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/03/10/go%E4%B8%AD%E7%9A%84udp%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/" title="go中的网络通信踩坑记录">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">go中的网络通信踩坑记录</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2024/02/16/hello-world/" title="Hello World">
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
